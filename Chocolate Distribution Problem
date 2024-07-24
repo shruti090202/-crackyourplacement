@@ -1,0 +1,12 @@
+class Solution:
+
+    def findMinDiff(self, A,N,M):
+        if(N<M):
+            return 0
+        A.sort()
+        k = A[N-1] - A[0]           
+        for i in range(N-M+1):
+            if((A[i+M-1]-A[i])<k):
+                k = A[i+M-1]-A[i]
+                
+        return k
