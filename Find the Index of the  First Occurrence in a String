@@ -1,0 +1,30 @@
+int strStr(char* haystack, char* needle) {
+    int n = strlen(needle);
+    int m = strlen(haystack);
+    int k = 0;
+    int index;
+    int t;
+    if(n>m){
+        return -1;
+    }
+    for(int j = 0; j<m;j++){
+        if(haystack[j] == needle[0]){
+            index = j;
+            t = j;
+            for(int i = 1;i<n;i++){
+                t++;
+                if(needle[i] == haystack[t]){
+                    k += 1;
+                }
+                else{
+                    k = 0;
+                    break;
+                }
+            }
+            if(k == n-1){
+                return index;
+            }
+        }
+    }
+    return -1;
+}
