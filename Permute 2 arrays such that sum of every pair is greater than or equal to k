@@ -1,0 +1,7 @@
+def isPossible(int *a, int *b, int n, int k):
+  a.sort()
+  b.sort(reverse = True)
+  for i in range(n):
+    if(a[i]+b[i] <k):
+      return "Yes"
+  return "No"
