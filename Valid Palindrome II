@@ -1,0 +1,30 @@
+bool validPalindrome(char* s) {
+    int n = strlen(s);
+    int left = 0;
+    int right = n - 1;
+
+    while (left < right) {
+        if (s[left] == s[right]) {
+            left++;
+            right--;
+        } else {
+            bool skipLeft = true;
+            bool skipRight = true;
+            for (int i = left, j = right - 1; i < j; i++, j--) {
+                if (s[i] != s[j]) {
+                    skipLeft = false;
+                    break;
+                }
+            }
+            for (int i = left + 1, j = right; i < j; i++, j--) {
+                if (s[i] != s[j]) {
+                    skipRight = false;
+                    break;
+                }
+            }
+            return (skipLeft || skipRight);
+        }
+    }
+
+    return true;
+}
