@@ -1,0 +1,22 @@
+def count_anagrams(words):
+    from collections import defaultdict
+
+    anagrams = defaultdict(list)
+
+    # Group words by sorted tuple of their characters
+    for word in words:
+        key = tuple(sorted(word))
+        anagrams[key].append(word)
+
+    # Get the counts of each group
+    counts = [len(group) for group in anagrams.values()]
+
+    # Sort the counts in increasing order
+    counts.sort()
+
+    # Print the sorted counts
+    print(" ".join(map(str, counts)))
+
+# Example usage:
+words = ["cat", "dog", "tac", "god", "act"]
+count_anagrams(words)  # Output: 2 3
