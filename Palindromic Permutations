@@ -1,0 +1,46 @@
+from collections import Counter
+from itertools import permutations
+
+def generate_palindromic_permutations(s):
+    def can_form_palindrome(count):
+        odd_count = sum(1 for c in count.values() if c % 2 != 0)
+        return odd_count <= 1
+
+    def build_half_palindrome(count):
+        half_palindrome = []
+        middle_char = ""
+        
+        for char, freq in count.items():
+            if freq % 2 != 0:
+                middle_char = char
+            half_palindrome.extend([char] * (freq // 2))
+        
+        return half_palindrome, middle_char
+    
+    def create_palindromes(half_palindrome, middle_char):
+        half_permutations = set(permutations(half_palindrome))
+        palindromes = []
+        
+        for half in half_permutations:
+            half_str = ''.join(half)
+            full_palindrome = half_str + middle_char + half_str[::-1]
+            palindromes.append(full_palindrome)
+        
+        return palindromes
+
+    # Count frequencies of each character
+    count = Counter(s)
+
+    # Check if a palindrome can be formed
+    if not can_form_palindrome(count):
+        return []
+    
+    # Build half of the palindrome and the middle character if necessary
+    half_palindrome, middle_char = build_half_palindrome(count)
+    
+    # Create all unique palindromic permutations
+    return create_palindromes(half_palindrome, middle_char)
+
+# Example usage:
+s = "aabb"
+print(generate_palindromic_permutations(s))  # Output: ['abba', 'baab']
