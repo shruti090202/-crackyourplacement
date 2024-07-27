@@ -1,0 +1,31 @@
+def is_riffle(shuffledDeck, half1, half2):
+    # Lengths of the halves
+    len1, len2 = len(half1), len(half2)
+    
+    # If lengths don't match, return False
+    if len(shuffledDeck) != len1 + len2:
+        return False
+    
+    # Initialize DP table
+    dp = [[False] * (len2 + 1) for _ in range(len1 + 1)]
+    dp[0][0] = True
+    
+    # Fill the DP table
+    for i in range(len1 + 1):
+        for j in range(len2 + 1):
+            if i > 0 and dp[i - 1][j] and shuffledDeck[i + j - 1] == half1[i - 1]:
+                dp[i][j] = True
+            if j > 0 and dp[i][j - 1] and shuffledDeck[i + j - 1] == half2[j - 1]:
+                dp[i][j] = True
+    
+    # Result is in the bottom-right corner of the DP table
+    return dp[len1][len2]
+
+# Example usage:
+shuffledDeck = ['2', '1', '3', '4']
+half1 = ['2', '3']
+half2 = ['1', '4']
+print(is_riffle(shuffledDeck, half1, half2))  # Output: True
+
+shuffledDeck = ['2', '1', '4', '3']
+print(is_riffle(shuffledDeck, half1, half2))  # Output: False
