@@ -1,0 +1,22 @@
+def format_chemicals(chemicals, symbols):
+    def find_and_replace(name, symbols):
+        # Sort symbols by length in descending order to prioritize longer symbols
+        symbols = sorted(symbols, key=len, reverse=True)
+        for symbol in symbols:
+            start = 0
+            while True:
+                start = name.find(symbol, start)
+                if start == -1:
+                    break
+                name = name[:start] + f"[{symbol}]" + name[start + len(symbol):]
+                start += len(symbol) + 2  # Move past the inserted symbol
+        return name
+
+    formatted_chemicals = [find_and_replace(name, symbols) for name in chemicals]
+    return ', '.join(formatted_chemicals)
+
+# Example usage:
+chemicals = ['Amazon', 'Microsoft', 'Google']
+symbols = ['I', 'Am', 'cro', 'Na', 'le', 'abc']
+formatted_text = format_chemicals(chemicals, symbols)
+print(formatted_text)
