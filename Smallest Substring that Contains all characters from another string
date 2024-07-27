@@ -1,0 +1,52 @@
+from collections import Counter, defaultdict
+
+def min_window_substring(A, B):
+    if not A or not B:
+        return ""
+    
+    # Frequency count of characters in B
+    required_count = Counter(B)
+    window_count = defaultdict(int)
+    
+    # Number of unique characters in B that need to be present in the window
+    required_chars = len(required_count)
+    formed_chars = 0
+    
+    l, r = 0, 0
+    min_len = float("inf")
+    min_window = ""
+    
+    while r < len(A):
+        # Add character from right end to the window
+        character = A[r]
+        window_count[character] += 1
+        
+        # If the current character's count matches the required count
+        if character in required_count and window_count[character] == required_count[character]:
+            formed_chars += 1
+        
+        # Try to contract the window from the left
+        while l <= r and formed_chars == required_chars:
+            character = A[l]
+            
+            # Update the minimum window if it's smaller than the previous one
+            if r - l + 1 < min_len:
+                min_len = r - l + 1
+                min_window = A[l:r + 1]
+            
+            # Remove the character from the left end
+            window_count[character] -= 1
+            if character in required_count and window_count[character] < required_count[character]:
+                formed_chars -= 1
+            
+            l += 1
+        
+        # Expand the window by moving the right pointer
+        r += 1
+    
+    return min_window
+
+# Example usage:
+A = "ADOBECODEBANC"
+B = "ABC"
+print(min_window_substring(A, B))  # Output: "BANC"
