@@ -1,0 +1,8 @@
+def find_index_equals_value(arr):
+    i = 0
+    for i in range(len(arr)):
+        if(i == arr[i]):
+            return arr[i]
+    return "No such element exists"
+arr = [-10, -5, -1 ,0, 3, 7, 9]
+print(find_index_equals_value(arr))
