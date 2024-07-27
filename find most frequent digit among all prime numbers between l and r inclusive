@@ -1,0 +1,47 @@
+def sieve_of_eratosthenes(max_num):
+    is_prime = [True] * (max_num + 1)
+    is_prime[0] = is_prime[1] = False
+    
+    for start in range(2, int(max_num**0.5) + 1):
+        if is_prime[start]:
+            for multiple in range(start*start, max_num + 1, start):
+                is_prime[multiple] = False
+    
+    return is_prime
+
+def count_digit_frequency(primes, l, r):
+    digit_count = [0] * 10
+    
+    for num in range(l, r + 1):
+        if primes[num]:
+            for char in str(num):
+                digit_count[int(char)] += 1
+    
+    return digit_count
+
+def most_frequent_digit(l, r):
+    # Generate all primes up to 10^6
+    max_num = 10**6
+    primes = sieve_of_eratosthenes(max_num)
+    
+    # Count digit frequencies in the range [l, r]
+    digit_count = count_digit_frequency(primes, l, r)
+    
+    # Find the most frequent digit
+    max_freq = -1
+    result_digit = -1
+    
+    for digit in range(10):
+        if digit_count[digit] > max_freq:
+            max_freq = digit_count[digit]
+            result_digit = digit
+        elif digit_count[digit] == max_freq:
+            if digit > result_digit:
+                result_digit = digit
+    
+    return result_digit
+
+# Example usage:
+l = 10
+r = 50
+print(most_frequent_digit(l, r))  # Output will be based on the frequency of digits among primes in the range [10, 50]
