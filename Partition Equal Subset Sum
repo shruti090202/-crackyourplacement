@@ -1,0 +1,21 @@
+def can_partition(nums):
+    total_sum = sum(nums)
+    
+    # If total_sum is odd, it's not possible to partition it into two equal subsets
+    if total_sum % 2 != 0:
+        return False
+    
+    target_sum = total_sum // 2
+    dp = [False] * (target_sum + 1)
+    dp[0] = True
+    
+    for num in nums:
+        # Update dp array from back to front
+        for i in range(target_sum, num - 1, -1):
+            dp[i] = dp[i] or dp[i - num]
+    
+    return dp[target_sum]
+
+# Example usage:
+nums = [1, 5, 11, 5]
+print(can_partition(nums))  # Output: True (The array can be partitioned into [1, 5, 5] and [11])
