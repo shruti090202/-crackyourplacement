@@ -1,0 +1,25 @@
+def create_matrix(dictionary):
+    # Ensure all words are of the same length
+    word_length = len(dictionary[0])
+    if any(len(word) != word_length for word in dictionary):
+        raise ValueError("All words in the dictionary must be of the same length")
+
+    # Create a matrix
+    matrix = [list(word) for word in dictionary]
+
+    # Check if all columns also form valid words in the dictionary
+    for col in range(word_length):
+        col_word = ''.join(matrix[row][col] for row in range(word_length))
+        if col_word not in dictionary:
+            raise ValueError("Not all columns form valid words in the dictionary")
+
+    return matrix
+
+def print_matrix(matrix):
+    for row in matrix:
+        print(''.join(row))
+
+# Example usage:
+dictionary = ["area", "rune", "east", "apts"]
+matrix = create_matrix(dictionary)
+print_matrix(matrix)
