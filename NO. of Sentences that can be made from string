@@ -1,0 +1,17 @@
+def count_sentences(s, word_dict):
+    word_set = set(word_dict)  # Convert list to set for O(1) lookups
+    n = len(s)
+    dp = [0] * (n + 1)
+    dp[0] = 1  # Base case: There is one way to segment an empty string
+    
+    for i in range(1, n + 1):
+        for j in range(i):
+            if s[j:i] in word_set:
+                dp[i] += dp[j]
+    
+    return dp[n]
+
+# Example usage:
+s = "catsanddog"
+word_dict = ["cat", "cats", "and", "sand", "dog"]
+print(count_sentences(s, word_dict))  # Output: 5
