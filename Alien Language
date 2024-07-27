@@ -1,0 +1,51 @@
+from collections import defaultdict, deque
+
+def alien_order(words):
+    # Initialize the graph and in-degree count
+    graph = defaultdict(set)
+    in_degree = defaultdict(int)
+    
+    # Create all nodes in the graph
+    for word in words:
+        for char in word:
+            if char not in in_degree:
+                in_degree[char] = 0
+    
+    # Build the graph and update in-degrees
+    for i in range(len(words) - 1):
+        word1, word2 = words[i], words[i + 1]
+        min_length = min(len(word1), len(word2))
+        found_difference = False
+        for j in range(min_length):
+            if word1[j] != word2[j]:
+                if word2[j] not in graph[word1[j]]:
+                    graph[word1[j]].add(word2[j])
+                    in_degree[word2[j]] += 1
+                found_difference = True
+                break
+        # If word2 is a prefix of word1, but longer, it's invalid
+        if not found_difference and len(word1) > len(word2):
+            return ""
+    
+    # Topological sort using Kahn's Algorithm (BFS)
+    zero_in_degree_queue = deque([char for char in in_degree if in_degree[char] == 0])
+    order = []
+    
+    while zero_in_degree_queue:
+        char = zero_in_degree_queue.popleft()
+        order.append(char)
+        
+        for neighbor in graph[char]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                zero_in_degree_queue.append(neighbor)
+    
+    # If the order does not include all characters, there was a cycle
+    if len(order) < len(in_degree):
+        return ""
+    
+    return ''.join(order)
+
+# Example usage:
+words = ["wrt", "wrf", "er", "ett", "rftt"]
+print(alien_order(words))  # Output could be a valid alien language order like 'wertf'
