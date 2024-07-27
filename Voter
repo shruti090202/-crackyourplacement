@@ -1,0 +1,49 @@
+A text file contains {candidateID,voterID} details of an ongoing voting. Read this file in real time and report top 5 candidates. 
+Also report a fraud if a Voter tries to vote twice or try to vote more then one candidate. Assume that the database is offline.
+
+import time
+
+def read_votes(file_path):
+    candidate_votes = {}
+    voter_history = {}
+    reported_frauds = set()
+
+    def report_fraud(voter_id, reason):
+        if voter_id not in reported_frauds:
+            print(f"Fraud detected for Voter ID {voter_id}: {reason}")
+            reported_frauds.add(voter_id)
+
+    with open(file_path, 'r') as file:
+        file.seek(0, 2)  # Move the cursor to the end of the file
+
+        while True:
+            line = file.readline()
+            if not line:
+                time.sleep(1)  # Wait for new data to be added to the file
+                continue
+
+            try:
+                candidate_id, voter_id = line.strip().split(',')
+            except ValueError:
+                print(f"Invalid line format: {line.strip()}")
+                continue
+
+            if voter_id in voter_history:
+                if voter_history[voter_id] != candidate_id:
+                    report_fraud(voter_id, "Voted for more than one candidate")
+                else:
+                    report_fraud(voter_id, "Voted more than once")
+                continue
+
+            voter_history[voter_id] = candidate_id
+            candidate_votes[candidate_id] = candidate_votes.get(candidate_id, 0) + 1
+
+            # Report top 5 candidates
+            top_candidates = sorted(candidate_votes.items(), key=lambda item: item[1], reverse=True)[:5]
+            print("Top 5 candidates:")
+            for candidate, votes in top_candidates:
+                print(f"Candidate {candidate}: {votes} votes")
+
+if __name__ == "__main__":
+    file_path = "votes.txt"  # Replace with your file path
+    read_votes(file_path)
