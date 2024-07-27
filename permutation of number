@@ -1,0 +1,54 @@
+Given an input string of numbers like 121, find all permutations of that number in the same order for
+the corresponding letters for each number so 121 => 1 2 1, 12 1, and 1 21 which is ABA, LA, and AT .
+
+from itertools import permutations
+
+# Define number-to-letter mappings (customize as needed)
+number_to_letters = {
+    '1': '',       # Usually, 1 does not map to any letters, can be customized
+    '2': 'ABC',
+    '3': 'DEF',
+    '4': 'GHI',
+    '5': 'JKL',
+    '6': 'MNO',
+    '7': 'PQRS',
+    '8': 'TUV',
+    '9': 'WXYZ',
+    '10': ' ',
+    '11': ' ',
+    '12': 'L',     # Custom mapping if required
+    '21': 'T'      # Custom mapping if required
+}
+
+def get_all_permutations(s):
+    result = []
+    n = len(s)
+    
+    # Generate all partitions of the string
+    def partition(s):
+        result = []
+        def backtrack(start, path):
+            if start == len(s):
+                result.append(path[:])
+                return
+            for end in range(start + 1, len(s) + 1):
+                backtrack(end, path + [s[start:end]])
+        backtrack(0, [])
+        return result
+    
+    # Map partitions to their letter representations
+    def translate_to_letters(partitions):
+        translations = []
+        for part in partitions:
+            translation = ''.join(number_to_letters.get(p, '') for p in part)
+            translations.append(translation)
+        return translations
+    
+    partitions = partition(s)
+    translations = translate_to_letters(partitions)
+    
+    return translations
+
+# Example usage:
+s = "121"
+print(get_all_permutations(s))
