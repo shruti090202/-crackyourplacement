@@ -1,0 +1,37 @@
+from collections import deque, defaultdict
+
+def find_install_order(dependencies):
+    # Create a graph and in-degree count
+    graph = defaultdict(list)
+    in_degree = defaultdict(int)
+    
+    # Build the graph and compute in-degrees
+    for pre, pkg in dependencies:
+        graph[pre].append(pkg)
+        in_degree[pkg] += 1
+        if pre not in in_degree:
+            in_degree[pre] = 0
+    
+    # Queue for nodes with zero in-degree
+    zero_in_degree_queue = deque([node for node in in_degree if in_degree[node] == 0])
+    install_order = []
+    
+    while zero_in_degree_queue:
+        node = zero_in_degree_queue.popleft()
+        install_order.append(node)
+        
+        # Reduce the in-degree of neighbor nodes
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                zero_in_degree_queue.append(neighbor)
+    
+    # If the install_order contains all nodes, return it; otherwise, return an empty list (cycle detected)
+    if len(install_order) == len(in_degree):
+        return install_order
+    else:
+        return []  # There is a cycle in the dependencies
+
+# Example usage:
+dependencies = [('b', 'a'), ('c', 'b')]  # 'b' depends on 'a', 'c' depends on 'b'
+print(find_install_order(dependencies))  # Output: ['c', 'b', 'a']
