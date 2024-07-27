@@ -1,0 +1,32 @@
+def split_message(message, char_limit):
+    words = message.split()
+    chunks = []
+    current_chunk = []
+    current_length = 0
+
+    # Process each word
+    for word in words:
+        # If adding this word exceeds the char_limit, finalize the current chunk
+        if current_length + len(word) + len(current_chunk) > char_limit:
+            chunks.append(' '.join(current_chunk))
+            current_chunk = []
+            current_length = 0
+        
+        # Add the word to the current chunk
+        current_chunk.append(word)
+        current_length += len(word)
+
+    # Add the last chunk if any words are left
+    if current_chunk:
+        chunks.append(' '.join(current_chunk))
+    
+    # Annotate each chunk
+    total_chunks = len(chunks)
+    annotated_chunks = [f"{chunk}({i+1}/{total_chunks})" for i, chunk in enumerate(chunks)]
+    
+    return annotated_chunks
+
+# Example usage:
+message = "Hi Sivasrinivas, your Uber is arriving now!"
+char_limit = 25
+print(split_message(message, char_limit))
