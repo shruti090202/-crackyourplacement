@@ -1,0 +1,21 @@
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        n1 = len(nums1)
+        n2 = len(nums2)
+        for i in range(n1):
+            for j in range(n2):
+                if(nums1[i] == nums2[j]):
+                    max = nums2[j]
+                    index = j+1
+                    while index<n2:
+                        if(nums2[index]>max):
+                            max = nums2[index]
+                            break
+                        index = index+1
+                    if(max <= nums2[j]):
+                        nums1[i] = -1
+                        break
+                    else:
+                        nums1[i] = max
+                        break
+        return nums1
