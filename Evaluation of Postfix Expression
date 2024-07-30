@@ -1,0 +1,16 @@
+class Solution:
+    
+    #Function to evaluate a postfix expression.
+    def evaluatePostfix(self, S):
+        digits = {'0':0,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9}
+        symbols = {'*':lambda x,y:x*y , '+':lambda x,y:x+y , '-':lambda x,y:x-y , '/':lambda x,y:int(x/y)}
+        stack = []
+        for element in S:
+            if element in digits:
+                stack.append(digits[element])
+            elif element in symbols:
+                num2 = stack.pop()
+                num1 = stack.pop()
+                value = symbols[element](num1,num2)
+                stack.append(value)
+        return stack[-1]
