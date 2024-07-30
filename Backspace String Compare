@@ -1,0 +1,28 @@
+def next_valid_char_index(string: str, index: int) -> int:
+            backspace_count = 0
+            while index >= 0:
+                if string[index] == '#':
+                    backspace_count += 1
+                elif backspace_count > 0:
+                    backspace_count -= 1
+                else:
+                    break
+                index -= 1
+            return index
+
+        index_s = len(s) - 1
+        index_t = len(t) - 1
+
+        while index_s >= 0 or index_t >= 0:
+            index_s = next_valid_char_index(s, index_s)
+            index_t = next_valid_char_index(t, index_t)
+
+            if index_s >= 0 and index_t >= 0 and s[index_s] != t[index_t]:
+                return False
+            if (index_s >= 0) != (index_t >= 0):
+                return False
+
+            index_s -= 1
+            index_t -= 1
+
+        return True
