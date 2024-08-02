@@ -1,0 +1,18 @@
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        reverse_binary = [0]*32
+        i = 0
+        while(n>0):
+            reverse_binary[i] = n%2
+            n = int(n/2)
+            i+=1
+        int_to_binary = [0]*i
+        k = 0
+        for j in range(i-1,-1,-1):
+            int_to_binary[k] = reverse_binary[j]
+            k+=1
+        set = 0
+        for i in range(k):
+            if int_to_binary[i] == 1:
+                set+=1
+        return set
