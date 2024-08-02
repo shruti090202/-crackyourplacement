@@ -1,3 +1,4 @@
+C PROGRAM
 bool isValid(char* s) {
     int n = strlen(s);
     char stack[n];
@@ -20,3 +21,26 @@ bool isValid(char* s) {
         return false;
     }
 }
+
+PYTHON PROGRAM
+class Solution:
+    def isValid(self, s: str) -> bool:
+        n = len(s)
+        if n%2!=0:
+            return False
+        stack = [None]*n
+        top = -1
+        for i in range(n):
+            if s[i] == '(' or s[i] == '[' or s[i] == '{':
+                top+=1
+                stack[top] =s[i]
+            else:
+                if top == -1 or stack[top] == '(' and s[i]!=')' or stack[top] == '[' and s[i]!=']' or stack[top] == '{' and s[i]!='}':
+                    return False
+                top-=1
+        
+        if top == -1:
+            return True
+        else:
+            return False
+
