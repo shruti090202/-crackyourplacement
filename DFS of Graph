@@ -1,0 +1,15 @@
+class Solution:
+    
+    #Function to return a list containing the DFS traversal of the graph.
+    def dfsOfGraph(self, V, adj):
+        def dfs(node):
+            visited[node] = True
+            result.append(node)
+            for neighbor in adj[node]:
+                if not visited[neighbor]:
+                    dfs(neighbor)
+        
+        result = []
+        visited = [False]*V
+        dfs(0)
+        return result
