@@ -1,0 +1,20 @@
+
+def findMedian(root):
+    def inorderTraversal(node,nodes):
+        if node is None:
+            return
+        inorderTraversal(node.left,nodes)
+        nodes.append(node.data)
+        inorderTraversal(node.right,nodes)
+    
+    nodes = []
+    inorderTraversal(root,nodes)
+    n = len(nodes)
+    if n%2 == 0:
+        median = (nodes[int(n/2)-1]+nodes[int(n/2)])/2
+        if median.is_integer():
+            return int(median)
+        else:
+            return median
+    else:
+        return nodes[int(n/2)]
