@@ -1,0 +1,28 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        def left_leaf(node: Optional[TreeNode], leaf_node:List[int],is_left:bool):
+            if node is None:
+                return
+            if node.left is None and node.right is None and is_left:
+                leaf_node.append(node.val)
+            left_leaf(node.left,leaf_node,True)
+            left_leaf(node.right,leaf_node,False)
+
+
+        if root is None:
+            return 0
+        if root.left is None and root.right is None:
+            return 0
+        sum = 0
+        leaf_node = []
+        left_leaf(root,leaf_node,False)
+        for num in leaf_node:
+            sum = sum+num
+        return sum
+        
