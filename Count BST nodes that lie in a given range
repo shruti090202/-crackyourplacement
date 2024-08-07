@@ -1,0 +1,13 @@
+class Solution:
+    def getCount(self,root,low,high):
+        def finalCount(node,count):
+            if node is None:
+                return count
+            if node.data>=low and node.data<=high:
+                count = count+1
+            count = finalCount(node.left,count)
+            count = finalCount(node.right,count)
+            return count
+            
+        count = 0
+        return finalCount(root,count)
