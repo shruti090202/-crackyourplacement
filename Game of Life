@@ -1,0 +1,29 @@
+class Solution:
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        directions = {(1,0),(0,1),(-1,0),(0,-1),(1,-1),(-1,1),(1,1),(-1,-1)}
+        m = len(board)
+        n = len(board[0])
+        grid = [[0 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                count0 = 0
+                count1 = 0
+                for x,y in directions:
+                    if 0<=i+x<m and 0<=j+y<n:
+                        if board[i+x][j+y] == 0:
+                            count0+=1
+                        else:
+                            count1+=1
+                if board[i][j] == 1:
+                    if count1<2 or count1>3:
+                        grid[i][j] =0
+                    else:
+                        grid[i][j] = 1
+                elif board[i][j] == 0:
+                    if count1 == 3:
+                        grid[i][j] = 1
+                    else:
+                        grid[i][j] = 0
+        for i in range(m):
+            for j in range(n):
+                board[i][j] = grid[i][j]
