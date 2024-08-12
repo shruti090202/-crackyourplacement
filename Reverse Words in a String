@@ -1,0 +1,17 @@
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        components = s.split(' ')
+        stack = []
+        for component in components:
+            if component == "":
+                continue
+            else:
+                stack.append(component)
+        n = len(stack)
+        i = n-1
+        result = []
+        while i>=0:
+            result.append(stack[i])
+            i-=1
+        s = ' '.join(result)
+        return s
